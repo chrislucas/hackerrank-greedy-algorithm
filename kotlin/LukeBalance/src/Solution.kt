@@ -1,20 +1,31 @@
 /**
  * https://www.hackerrank.com/challenges/luck-balance/problem?h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen
+ * DONE
  * */
 
 
 // Complete the luckBalance function below.
 fun luckBalance(k: Int, contests: Array<Array<Int>>): Int {
     var acc = 0
-
+    var qImportantContests = 0
+    for( i in 0 until  contests.size) {
+        val p = contests[i]
+        if (p[1] == 1) {
+            // contar quantidade de contestes importantes que foram perdidos
+            if (qImportantContests < k) {
+                acc += p[0]
+                qImportantContests++
+            }
+            else {
+                acc -= p[0]
+            }
+        }
+        else {
+            acc += p[0]
+        }
+    }
     return acc
 }
-/**
-3 2
-5 1
-1 1
-4 0
- * */
 
 fun main(args: Array<String>) {
     val data = readLine()!!.split(" ").map(String::toInt).toTypedArray()
@@ -25,7 +36,13 @@ fun main(args: Array<String>) {
         contest[i] = readLine()!!.split(" ").map(String::toInt).toTypedArray()
     }
     val comp = Comparator<Array<Int>> {
-        p, q -> q[1].compareTo(p[1])
+        p, q ->
+        val rs = q[1].compareTo(p[1])
+        if (rs == 0)
+             q[0].compareTo(p[0])
+        else
+        rs
+
     }
     contest.sortWith(comp)
     println(luckBalance(k, contest))
